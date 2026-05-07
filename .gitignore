@@ -4,5 +4,6 @@ Back-End/node_modules/
 dist/
 build/
 node_modules/
-Back-End/src/uploads/
+Back-End/src/uploads/*
+!Back-End/src/uploads/.gitkeep
 
