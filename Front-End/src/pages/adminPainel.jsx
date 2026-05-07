@@ -46,59 +46,55 @@ function AdminPainel() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    alert('Você foi desconectado.');
-    navigate('/');
-  };
-
   return (
-    <div>
-      <BarraNavegacao />
-      <main className={styles.conteudoGeral}>
-        <div className={styles.painelHeader}>
-          <h2>Painel de Controle Administrativo</h2>
-          <div>
-            <Link to="/admin/adicionar-produto">
-              <button className={styles.botaoAcao}>Adicionar Novo Produto</button>
-            </Link>
-          </div>
-        </div>
+  <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <BarraNavegacao />
 
-        <table className={styles.tabelaAdmin}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Preço</th>
-              <th>Ações</th>
+    <main className={styles.conteudoGeral} style={{ flex: 1 }}>
+      <div className={styles.painelHeader}>
+        <h2>Painel de Controle Administrativo</h2>
+        <div>
+          <Link to="/admin/adicionar-produto">
+            <button className={styles.botaoAcao}>Adicionar Novo Produto</button>
+          </Link>
+        </div>
+      </div>
+
+      <table className={styles.tabelaAdmin}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {produtos.map(produto => (
+            <tr key={produto.id}>
+              <td>{produto.id}</td>
+              <td>{produto.nome}</td>
+              <td>R$ {produto.preco}</td>
+              <td>
+                <Link to={`/admin/editar-produto/${produto.id}`}>
+                  <button className={styles.botaoAcao}>Editar</button>
+                </Link>
+                <button
+                  onClick={() => handleExcluir(produto.id)}
+                  className={`${styles.botaoAcao} ${styles.botaoExcluir}`}
+                >
+                  Excluir
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {produtos.map(produto => (
-              <tr key={produto.id}>
-                <td>{produto.id}</td>
-                <td>{produto.nome}</td>
-                <td>R$ {produto.preco}</td>
-                <td>
-                  <Link to={`/admin/editar-produto/${produto.id}`}>
-                    <button className={styles.botaoAcao}>Editar</button>
-                  </Link>
-                  <button
-                    onClick={() => handleExcluir(produto.id)}
-                    className={`${styles.botaoAcao} ${styles.botaoExcluir}`}
-                  >
-                    Excluir
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </main>
-      <Rodape />
-    </div>
-  );
+          ))}
+        </tbody>
+      </table>
+    </main>
+
+    <Rodape />
+  </div>
+);
 }
 
 export default AdminPainel;

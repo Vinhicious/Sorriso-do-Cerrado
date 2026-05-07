@@ -1,0 +1,8 @@
+Front-End/node_modules/
+Back-End/node_modules/
+.env
+dist/
+build/
+node_modules/
+Back-End/src/uploads/
+

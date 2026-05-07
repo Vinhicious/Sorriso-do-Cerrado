@@ -9,15 +9,6 @@ CREATE TABLE usuarios (
     papel ENUM('admin', 'artesa') DEFAULT 'artesa'
 );
 
-INSERT INTO usuarios (nome, email, senha, papel) VALUES (
-  'Admin',
-  'admin@email.com',
-  '$2b$10$HahQ22BGzykXlrD/G0rAz.ox.8daO0RAr/I9t5pG8htpCyE1EM5eK',
-  'admin'
-);
-
-/*"email": "admin@email.com",
-"senha": "admin123"*/
 
 CREATE TABLE produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,5 +37,14 @@ CREATE TABLE itens_venda (
     preco_unitario DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (id_venda) REFERENCES vendas(id),
     FOREIGN KEY (id_produto) REFERENCES produtos(id)
+);
+
+CREATE TABLE favoritos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  id_produto INT NOT NULL,
+  data DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE,
+  FOREIGN KEY (id_produto) REFERENCES produtos(id) ON DELETE CASCADE
 );
 

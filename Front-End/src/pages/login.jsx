@@ -33,7 +33,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <BarraNavegacao />
       <main className="conteudo-geral" style={{ padding: '2rem' }}>
         <div className={styles.formularioContainer}>
