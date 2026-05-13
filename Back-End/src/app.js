@@ -5,10 +5,11 @@ import cors from 'cors';
 import produtosRoutes from './routes/produtos.js';
 import usuariosRoutes from './routes/usuarios.js';
 import vendasRoutes from './routes/vendas.js';
-import uploadRoutes from './routes/upload.js'; // NOVO
+import uploadRoutes from './routes/upload.js'; 
+import bannersRoutes from './routes/banners.js';
 
 import { criarBanco, criarTabelas } from './database/conexao.js';
-import { criarAdminPadrao } from './database/seed.js';
+import { criarAdminPadrao, criarBannersPadrao } from './database/seed.js';
 
 dotenv.config();
 
@@ -21,12 +22,12 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/uploads', express.static('src/uploads'));
-
 app.use('/produtos', produtosRoutes);
 app.use('/usuarios', usuariosRoutes);
 app.use('/vendas', vendasRoutes);
-app.use('/upload', uploadRoutes); 
+app.use('/uploads', express.static('uploads'));
+app.use('/banners', bannersRoutes);
+app.use('/upload', uploadRoutes);
 
 app.get('/', (req, res) => {
   res.send('API do Sorriso do Cerrado está funcionando!');
@@ -37,6 +38,7 @@ async function iniciar() {
     await criarBanco();
     await criarTabelas();
     await criarAdminPadrao();
+    await criarBannersPadrao();
 
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);

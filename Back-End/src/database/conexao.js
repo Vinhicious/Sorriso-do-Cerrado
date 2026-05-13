@@ -86,6 +86,17 @@ export const criarTabelas = async () => {
     UNIQUE KEY unique_fav (id_usuario, id_produto)
   )
 `);
+  await conexao.query(`
+    CREATE TABLE IF NOT EXISTS banners (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      titulo VARCHAR(100),
+      imagemURL VARCHAR(255) NOT NULL,
+      link VARCHAR(255),
+      ativo BOOLEAN DEFAULT true,
+      ordem INT DEFAULT 0
+    )
+`);
+
 };
 
 export default conexao;
