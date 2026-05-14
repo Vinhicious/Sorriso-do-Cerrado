@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BarraNavegacao from '../componentes/barraNavegacao.jsx';
 import Rodape from '../componentes/rodape.jsx';
-import styles from './login.module.css';
+import styles from './adicionarProduto.module.css';
 
 function AdicionarProduto() {
   const [nome, setNome] = useState('');
