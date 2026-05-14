@@ -37,10 +37,12 @@ export function AuthProvider({ children }) {
     login,
     logout,
     isAuthenticated: !!user,
-    isAdmin: user?.username === 'admin'
+    isAdmin: user?.papel === 'admin'
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  
+  
 }
 
 export function useAuth() {

@@ -5,96 +5,84 @@ import { autenticar } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.post('/', autenticar, async (req, res) => {
-    const { nome_cliente, email_cliente, telefone_cliente, itens } = req.body;
-  
-    if (!itens || !Array.isArray(itens) || itens.length === 0)
-      return res.status(400).json({ error: 'Itens da venda são obrigatórios' });
-  
-    try {
-      let total = 0;
-      for (const item of itens) {
-        const [[produto]] = await conexao.query('SELECT preco, estoque FROM produtos WHERE id = ?', [item.id_produto]);
-        if (!produto) return res.status(400).json({ error: `Produto com ID ${item.id_produto} não encontrado` });
-        if (produto.estoque < item.quantidade) return res.status(400).json({ error: `Estoque insuficiente para produto ID ${item.id_produto}` });
-        total += produto.preco * item.quantidade;
-      }
-  
-      const [vendaResult] = await conexao.query(
-        'INSERT INTO vendas (nome_cliente, email_cliente, telefone_cliente, total) VALUES (?, ?, ?, ?)',
-        [nome_cliente, email_cliente, telefone_cliente, total]
+  const { nome_cliente, email_cliente, telefone_cliente, itens } = req.body;
+
+  if (!itens || !Array.isArray(itens) || itens.length === 0) {
+    return res.status(400).json({ error: 'Itens da venda são obrigatórios' });
+  }
+
+  const conn = await conexao.getConnection();
+
+  try {
+    await conn.beginTransaction();
+
+    let total = 0;
+
+    // 1. validar produtos e calcular total
+    for (const item of itens) {
+      const [rows] = await conn.query(
+        'SELECT preco, estoque FROM produtos WHERE id = ?',
+        [item.id_produto]
       );
-  
-      const vendaId = vendaResult.insertId;
-  
-      for (const item of itens) {
-        const [[produto]] = await conexao.query('SELECT preco FROM produtos WHERE id = ?', [item.id_produto]);
-  
-        await conexao.query(
-          'INSERT INTO itens_venda (id_venda, id_produto, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
-          [vendaId, item.id_produto, item.quantidade, produto.preco]
-        );
-  
-        await conexao.query(
-          'UPDATE produtos SET estoque = estoque - ? WHERE id = ?',
-          [item.quantidade, item.id_produto]
-        );
+
+      const produto = rows[0];
+
+      if (!produto) {
+        throw new Error(`Produto ${item.id_produto} não encontrado`);
       }
-  
-      res.status(201).json({ message: 'Venda registrada com sucesso', vendaId, total });
-    } catch (error) {
-      res.status(500).json({ error: 'Erro ao registrar venda', detalhes: error.message });
+
+      if (produto.estoque < item.quantidade) {
+        throw new Error(`Estoque insuficiente para produto ${item.id_produto}`);
+      }
+
+      total += produto.preco * item.quantidade;
     }
-});
-  
 
-router.get('/', autenticar, async (req, res) => {
-  try {
-    const [vendas] = await conexao.query('SELECT * FROM vendas');
-    res.json(vendas);
-  } catch {
-    res.status(500).json({ error: 'Erro ao listar vendas' });
-  }
-});
-
-router.get('/:id', autenticar, async (req, res) => {
-  const { id } = req.params;
-  try {
-    const [[venda]] = await conexao.query('SELECT * FROM vendas WHERE id = ?', [id]);
-    if (!venda) return res.status(404).json({ error: 'Venda não encontrada' });
-
-    const [itens] = await conexao.query(
-      `SELECT iv.*, p.nome FROM itens_venda iv 
-       JOIN produtos p ON iv.id_produto = p.id 
-       WHERE iv.id_venda = ?`,
-      [id]
+    // 2. criar venda
+    const [vendaResult] = await conn.query(
+      'INSERT INTO vendas (nome_cliente, email_cliente, telefone_cliente, total) VALUES (?, ?, ?, ?)',
+      [nome_cliente, email_cliente, telefone_cliente, total]
     );
 
-    res.json({ venda, itens });
-  } catch {
-    res.status(500).json({ error: 'Erro ao buscar venda' });
-  }
-});
+    const vendaId = vendaResult.insertId;
 
-router.put('/:id/status', autenticar, async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
+    // 3. inserir itens + atualizar estoque
+    for (const item of itens) {
+      const [rows] = await conn.query(
+        'SELECT preco FROM produtos WHERE id = ?',
+        [item.id_produto]
+      );
 
-  if (!['pendente', 'confirmada', 'cancelada'].includes(status)) {
-    return res.status(400).json({ error: 'Status inválido' });
-  }
+      const produto = rows[0];
 
-  try {
-    const [result] = await conexao.query(
-      'UPDATE vendas SET status = ? WHERE id = ?',
-      [status, id]
-    );
+      await conn.query(
+        'INSERT INTO itens_venda (id_venda, id_produto, quantidade, preco_unitario) VALUES (?, ?, ?, ?)',
+        [vendaId, item.id_produto, item.quantidade, produto.preco]
+      );
 
-    if (result.affectedRows === 0)
-      return res.status(404).json({ error: 'Venda não encontrada' });
+      await conn.query(
+        'UPDATE produtos SET estoque = estoque - ? WHERE id = ?',
+        [item.quantidade, item.id_produto]
+      );
+    }
 
-    res.json({ message: 'Status da venda atualizado' });
-  } catch {
-    res.status(500).json({ error: 'Erro ao atualizar status da venda' });
+    await conn.commit();
+
+    res.status(201).json({
+      message: 'Venda registrada com sucesso',
+      vendaId,
+      total
+    });
+
+  } catch (error) {
+    await conn.rollback();
+
+    res.status(400).json({
+      error: error.message || 'Erro ao registrar venda'
+    });
+
+  } finally {
+    conn.release();
   }
 });
 

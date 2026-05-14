@@ -1,34 +1,97 @@
-.secaoPrincipal {
-  position: relative;
-  text-align: center;
-  color: white;
-  height: 70vh;
+.containerPaginaInicial {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  flex-direction: column;
 }
 
+.secaoPrincipal {
+  position: relative;
+  height: 45vh;
+  min-height: 420px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  overflow: visible;
+}
 .imagemPrincipal {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
   filter: brightness(0.7);
+  z-index: 1;
+}
+
+.bannersContainer {
+  position: absolute;
+  bottom: -120px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+  width: 100%;
+  padding: 0 40px;
+
+  z-index: 10;
+}
+
+.banner {
+  flex: 0 0 580px;
+
+  height: 300px;
+
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+
+  background: white;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+
+  transition: transform 0.2s ease;
+}
+
+.banner:hover {
+  transform: translateY(-6px);
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  display: block;
+}
+
+.botaoEditarBanner {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #8D5B4C;
+  color: white;
+  border: none;
+  font-size: 0.75rem;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.botaoEditarBanner:hover {
+  opacity: 1;
 }
 
 .conteudoGeral {
-  padding: 2rem;
+  padding: 220px 2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .secaoProdutosDestaque {
   text-align: center;
-  margin-bottom: 3rem;
 }
 
 .secaoProdutosDestaque h2 {
@@ -40,5 +103,4 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  justify-content: center;
 }

@@ -8,6 +8,12 @@ function RotaProtegida({ children }) {
     return <Navigate to="/login" />;
   }
 
+  const payload = JSON.parse(atob(token.split('.')[1]));
+
+  if (payload.papel !== 'admin') {
+    return <Navigate to="/" />;
+  }
+
   return children;
 }
 

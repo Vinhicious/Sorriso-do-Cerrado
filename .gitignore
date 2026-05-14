@@ -1,0 +1,12 @@
+Front-End/node_modules/
+Back-End/node_modules/
+node_modules/
+
+.env
+
+dist/
+build/
+
+Back-End/uploads/*
+!Back-End/uploads/.gitkeep
+

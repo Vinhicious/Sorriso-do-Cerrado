@@ -6,12 +6,49 @@ const ProdutoModel = {
     return rows;
   },
 
+  buscarPorId: async (id) => {
+    const [rows] = await conexao.query(
+      'SELECT * FROM produtos WHERE id = ?',
+      [id]
+    );
+    return rows[0];
+  },
+
   criar: async (produto) => {
-    const { nome, descricao, preco, imagem_url } = produto;
-    const sql = 'INSERT INTO produtos (nome, descricao, preco, imagem_url) VALUES (?, ?, ?, ?)';
-    const [result] = await conexao.query(sql, [nome, descricao, preco, imagem_url]);
+    const { nome, descricao, preco, estoque, imagemURL } = produto;
+
+    const [result] = await conexao.query(
+      `INSERT INTO produtos (nome, descricao, preco, estoque, imagemURL)
+       VALUES (?, ?, ?, ?, ?)`,
+      [nome, descricao, preco, estoque, imagemURL]
+    );
+
     return { id: result.insertId, ...produto };
+  },
+
+  atualizar: async (id, produto) => {
+    const { nome, descricao, preco, estoque, imagemURL } = produto;
+
+    const [result] = await conexao.query(
+      `UPDATE produtos 
+       SET nome=?, descricao=?, preco=?, estoque=?, imagemURL=?
+       WHERE id=?`,
+      [nome, descricao, preco, estoque, imagemURL, id]
+    );
+
+    return result.affectedRows > 0;
+  },
+
+  deletar: async (id) => {
+    const [result] = await conexao.query(
+      'DELETE FROM produtos WHERE id = ?',
+      [id]
+    );
+
+    return result.affectedRows > 0;
   }
+
+  
 };
 
 export default ProdutoModel;
