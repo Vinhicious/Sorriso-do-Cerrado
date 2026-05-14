@@ -75,17 +75,40 @@ Para executar este projeto no seu ambiente de desenvolvimento, serão necessári
 # Entre na pasta do projeto
 
 # Crie um ficheiro .env na raiz e configure as suas credenciais do banco de dados
+### ▶️ Rodando LOCAL (sem Docker)
 DB_HOST=localhost
 DB_USER=root
-DB_PASSWORD=suasenha
+DB_PASSWORD="suasenha"
 DB_NAME=sorrisodb
 DB_PORT=3306
+
+### ▶️ Rodando com DOCKER
+DB_HOST=mysql  
+DB_USER=root  
+DB_PASSWORD=root  
+DB_NAME=sorrisodb  
+DB_PORT=3306   
+
 
 # Instale as dependências
 npm install
 
-# Inicie o servidor 
-npx nodemon src/app.js
+# Inicie o servidor
+
+## ▶️ Rodando o servidor (Local)
+### Modo desenvolvimento
+npm run dev
+
+### Modo produção
+npm start
+
+--
+## 🐳 Rodando com Docker
+
+Na raiz do projeto:
+
+docker compose up --build
+
 ```
 > O servidor back-end vai rodar na porta 3000.
 
