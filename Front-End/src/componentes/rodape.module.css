@@ -1,7 +1,9 @@
 .rodape {
+  width: 100%;
+  background-color: #4A3B31; 
+  color: white;
+  padding: 20px 0;
   text-align: center;
-  padding: 1.5rem 2rem;
-  background-color: #4A3B31;
-  color: #FAF3E0;
-  margin-top: 2rem;
+  position: relative; 
+  margin-top: auto; 
 }

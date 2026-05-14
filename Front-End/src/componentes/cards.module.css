@@ -49,3 +49,35 @@
 .botaoAdicionar:hover {
   background-color: #714A3E;
 }
+
+.containerAcoes {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre o coração e o botão */
+  margin-top: 10px;
+}
+
+.botaoFavorito {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #8D5B4C; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.botaoFavorito:hover {
+  transform: scale(1.1);
+}
+
+.botaoFavorito.favoritado {
+  color: #A0522D; 
+}
+
+.botaoAdicionar {
+  flex: 1; 
+  margin-top: 0; 
+}

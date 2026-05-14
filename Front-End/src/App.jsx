@@ -8,6 +8,7 @@ import AdminPainel from './pages/adminPainel';
 import AdicionarProduto from './pages/adicionarProduto';
 import EditarProduto from './pages/editarProduto'; 
 import RotaProtegida from './auth/rotaProtegida';
+import Favoritos from './pages/favoritos';
 import Carrinho from './pages/carrinho';
 import './global.css';
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/produtos" element={<Produtos />} />
         <Route path="/produto/:id" element={<DetalheProduto />} />
+        <Route path="/favoritos" element={<Favoritos />} />
         <Route path="/carrinho" element={<Carrinho />} />
         <Route path="/login" element={<Login />} />
 
