@@ -87,7 +87,6 @@ npm install
 # Inicie o servidor 
 npx nodemon src/app.js
 ```
-```
 > O servidor back-end vai rodar na porta 3000.
 
 ### **2. Front-End**
