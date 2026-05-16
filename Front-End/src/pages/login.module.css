@@ -1,10 +1,10 @@
 .formularioContainer {
-  max-width: 500px;
+  width: 30%;
   margin: 2rem auto;
   padding: 2rem;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .campoFormulario {
@@ -18,7 +18,7 @@
 }
 
 .campoFormulario input {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -35,18 +35,33 @@
 }
 
 .botaoSubmit {
-    background-color: #8D5B4C;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
+  background-color: #8D5B4C;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.botaoCadastro {
+  margin-top: 25px;
+  background: #FFF;
+  color: #8D5B4C;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 .botaoSubmit:hover {
-    background-color: #714A3E;
+  background-color: #714A3E;
 }

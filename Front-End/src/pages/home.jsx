@@ -15,7 +15,7 @@ function Home() {
   const [banners, setBanners] = useState([]);
   const [favoritosIds, setFavoritosIds] = useState([]);
 
-  const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAuth();
   const inputRefs = useRef({});
 
   const buscarProdutos = async () => {
@@ -93,7 +93,7 @@ function Home() {
             <div key={banner.id} className={styles.banner}>
               <img src={banner.imagemURL} alt={banner.titulo} />
 
-              {isAuthenticated && (
+              {isAdmin && (
                 <>
                   <button
                     className={styles.botaoEditarBanner}
@@ -140,6 +140,6 @@ function Home() {
       <Rodape />
     </div>
   );
-} 
+}
 
 export default Home;

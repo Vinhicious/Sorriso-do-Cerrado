@@ -36,7 +36,7 @@ export const criarTabelas = async () => {
       nome VARCHAR(100) NOT NULL,
       email VARCHAR(100) NOT NULL UNIQUE,
       senha VARCHAR(255) NOT NULL,
-      papel ENUM('admin', 'artesa') DEFAULT 'artesa'
+      papel ENUM('admin', 'artesa', 'cliente') DEFAULT 'cliente'
     )
   `);
 
@@ -95,6 +95,10 @@ export const criarTabelas = async () => {
       ativo BOOLEAN DEFAULT true,
       ordem INT DEFAULT 0
     )
+`);
+  await conexao.query(`
+  ALTER TABLE usuarios
+  MODIFY papel ENUM('admin', 'artesa', 'cliente') DEFAULT 'cliente'
 `);
 
 };

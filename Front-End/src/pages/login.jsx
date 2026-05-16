@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../auth/authContext'; 
+import { useAuth } from '../auth/authContext';
 import BarraNavegacao from '../componentes/barraNavegacao.jsx';
 import Rodape from '../componentes/rodape.jsx';
 import styles from './login.module.css';
+import { Link } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -38,29 +39,34 @@ function Login() {
       <main className="conteudo-geral" style={{ padding: '2rem' }}>
         <div className={styles.formularioContainer}>
           <form onSubmit={handleSubmit}>
-            <h2>Acesso Administrativo</h2>
+            <h2>Login</h2>
             <div className={styles.campoFormulario}>
               <label htmlFor="email">Email</label>
-              <input 
-                type="email" 
-                id="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                required 
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className={styles.campoFormulario}>
               <label htmlFor="password">Senha</label>
-              <input 
-                type="password" 
-                id="password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                required 
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
             {error && <p className={styles.mensagemErro}>{error}</p>}
             <button type="submit" className={styles.botaoSubmit}>Entrar</button>
+            <Link to="/cadastro">
+              <button className={styles.botaoCadastro}>
+                Registrar-se
+              </button>
+            </Link>
           </form>
         </div>
       </main>

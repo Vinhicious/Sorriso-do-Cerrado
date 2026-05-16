@@ -38,8 +38,9 @@ router.post('/login', async (req, res) => {
 });
 
 // REGISTER - só admin pode
-router.post('/register', autenticar, autorizar('admin'), async (req, res) => {
-  const { nome, email, senha, papel } = req.body;
+router.post('/register', async (req, res) => {
+  const { nome, email, senha } = req.body;
+  const role = 'cliente';
   try {
     const [existe] = await conexao.query('SELECT id FROM usuarios WHERE email = ?', [email]);
     if (existe.length > 0) {
