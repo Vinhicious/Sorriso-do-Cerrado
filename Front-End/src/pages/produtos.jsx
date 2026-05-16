@@ -8,17 +8,29 @@ import styles from './produtos.module.css';
 function Produtos() {
   const [listaDeProdutos, setListaDeProdutos] = useState([]);
   const [termoDeBusca, setTermoDeBusca] = useState('');
+  const [favoritosIds, setFavoritosIds] = useState([]);
 
   useEffect(() => {
-    const buscarProdutos = async () => {
+    const carregarDados = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/produtos');
-        setListaDeProdutos(response.data);
+        // Busca produtos
+        const resProdutos = await axios.get('http://localhost:3000/produtos');
+        setListaDeProdutos(resProdutos.data);
+
+        // Busca favorito
+        const token = localStorage.getItem('token');
+        if (token) {
+          const resFavoritos = await axios.get('http://localhost:3000/favoritos', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+
+          setFavoritosIds(resFavoritos.data.map(fav => fav.id));
+        }
       } catch (error) {
-        console.error("Erro ao buscar os produtos:", error);
+        console.error("Erro ao carregar dados:", error);
       }
     };
-    buscarProdutos();
+    carregarDados();
   }, []);
 
   const produtosFiltrados = listaDeProdutos.filter(produto => 
@@ -26,30 +38,35 @@ function Produtos() {
   );
 
   return (
-    <div>
-      <BarraNavegacao />
-      <main className={styles.conteudoGeral}>
-        <section className={styles.secaoProdutosDestaque}>
-          <h2>Nosso Catálogo</h2>
-          <p>Explore todos os nossos produtos feitos à mão com carinho.</p>
-          
-          <input 
-            type="text"
-            className={styles.campoBusca}
-            placeholder="Buscar por nome..."
-            value={termoDeBusca}
-            onChange={e => setTermoDeBusca(e.target.value)}
+  <div className={styles.paginaProdutos}>
+    <BarraNavegacao />
+    <main className={styles.conteudoGeral}>
+
+      <div className={styles.titulos}>
+        <h2>Nosso Catálogo</h2>
+        <p>Explore todos os nossos produtos feitos à mão com carinho.</p>
+      </div>
+      
+      <input 
+        type="text"
+        className={styles.campoBusca}
+        placeholder="Buscar por nome..."
+        value={termoDeBusca}
+        onChange={e => setTermoDeBusca(e.target.value)}
+      />
+      
+      <div className={styles.gradeProdutosDestaque}>
+        {produtosFiltrados.map(produto => (
+          <CartaoProduto 
+            key={produto.id} 
+            product={produto} 
+            favoritadoInicial={favoritosIds.includes(produto.id)} 
           />
-          
-          <div className={styles.gradeProdutosDestaque}>
-            {produtosFiltrados.map(produto => (
-              <CartaoProduto key={produto.id} product={produto} />
-            ))}
-          </div>
-        </section>
-      </main>
-      <Rodape />
-    </div>
+        ))}
+      </div>
+    </main>
+    <Rodape />
+  </div>
   );
 }
 

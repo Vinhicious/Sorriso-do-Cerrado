@@ -72,3 +72,32 @@
   font-weight: bold;
   line-height: 1;
 }
+
+
+.linksNavegacao {
+  display: flex;
+  align-items: center; 
+  gap: 20px; 
+  list-style: none;
+}
+
+.linkFavoritos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  transition: transform 0.2s ease;
+}
+
+.iconeFavoritos {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0; 
+  color: #333; 
+  transition: color 0.2s ease;
+  overflow: visible; 
+}
+
+.iconeFavoritos:hover {
+  color: #a0522d;
+}
